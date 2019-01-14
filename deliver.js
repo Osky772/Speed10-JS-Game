@@ -1,3 +1,12 @@
+// app should have way to add player 2 with driving with keys "wsad"
+// app should have way to display coins randomly on "streets" it's everywhere exclude houses
+// app should have way to display coins in an interval of 2 - 3 seconds
+// app should have way to collect coins by players (then coins should disappear)
+// *** app should have way to select color of car of every player ***
+// app should have way to display cuurect state of collected coins for each player
+// app should have way to finish after collected 20 coins by player 
+// *** coins would have rotation 3D ***
+
 (function(){
     const body = document.querySelector("body");
     
