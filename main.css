@@ -36,8 +36,10 @@ html, body {
 }
 
 :root {
-    --carPositionX: 0px;
-    --carPositionY: 0px;
+    --p1PositionX: 0px;
+    --p1PositionY: 0px;
+    --p2PositionX: 0px;
+    --p2PositionY: 640px;
 }
 
 .deliver-map {
@@ -60,16 +62,27 @@ html, body {
 
 .car {
     display: inline-block;
-    background-image: url("img/car_topview.svg");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-    top: var(--carPositionY);
-    left: var(--carPositionX);
     width: 80px;
     height: 80px;
     transition: top 0.5s, left 0.5s, transform 0.1s;
+}
+
+.player1 {
+    background-image: url("img/player1.svg");
+    top: var(--p1PositionY);
+    left: var(--p1PositionX);
+    transform: rotate(90deg);
+}
+
+
+.player2 {
+    background-image: url("img/player2.png");
+    top: var(--p2PositionY);
+    left: var(--p2PositionX);
     transform: rotate(90deg);
 }
 
