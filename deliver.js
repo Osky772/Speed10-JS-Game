@@ -1,4 +1,3 @@
-// app should have way to add player 2 with driving with keys "wsad"
 // app should have way to display coins randomly on "streets" it's everywhere exclude houses
 // app should have way to collect coins by players (then coins should disappear)
 // app should have way to display another coins after player get the currently displayed coin
@@ -47,10 +46,17 @@
     let deg = 90;
     let p1PositionX = getPlayerPosition("--p1PositionX" ,"x");
     let p1PositionY = getPlayerPosition("--p1PositionY", "y");
-
     // Starting position and rotate of player2 
     let p2PositionX = getPlayerPosition(player2 ,"x");
     let p2PositionY = getPlayerPosition(player2, "y");
+
+    function createCoin() {
+        const coin = document.createElement("div");
+        coin.classList.add("coin");
+        deliverContainer.prepend(coin);
+    };
+
+    createCoin();
 
     function wrongWay() {
         drivingEffect.classList.add("wrong-way");
@@ -72,23 +78,20 @@
         playerPositionY = getPlayerPosition(setPositionY ,"y");
         playerPositionX = getPlayerPosition(setPositionX ,"x");
         let cordsX = homesCords.some(home => {
-            // check if player1 position would be the same as any home's position and would not be equal to deliver home cords
+            // check if player's position would be the same as any home's position and would not be equal to deliver home cords
             return playerPositionX + 80 === home.posX && playerPositionY === home.posY && !(playerPositionX + 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
         });
-        if (cordsX) {
+        if (cordsX || !(playerPositionX < totalWidth)) {
                 playerPositionX;
                 wrongWay();
             } else {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 90;
                 player.style.transform = `rotate(${deg}deg)`;
-                playerPositionX = getPlayerPosition(setPositionX ,"x");
-                if (playerPositionX < totalWidth) {
-                    playerPositionX += 80;
-                    document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
-                    if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                        winner();
-                    };
+                playerPositionX += 80;
+                document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
+                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
+                    winner();
                 };
             };
       };
@@ -99,7 +102,7 @@
         let cordsX = homesCords.some(home => {
             return playerPositionX - 80 === home.posX && playerPositionY === home.posY && !(playerPositionX - 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
         });
-        if (cordsX) {
+        if (cordsX || !(playerPositionX > 0)) {
             playerPositionX;
             wrongWay();
         } else {
@@ -116,13 +119,10 @@
                 deg = 270;
                 player.style.transform = `rotate(${deg}deg)`;
             }
-            playerPositionX = getPlayerPosition(setPositionX ,"x");
-            if (playerPositionX > 0) {
-                playerPositionX -= 80;
-                document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
-                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                    winner();
-                };
+            playerPositionX -= 80;
+            document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
+            if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
+                winner();
             };
         };
     };
@@ -132,20 +132,17 @@
         let cordsY = homesCords.some(home => {
             return playerPositionX === home.posX && playerPositionY + 80 === home.posY && !(playerPositionX === deliverCords.posX && playerPositionY + 80 === deliverCords.posY);
         });
-        if (cordsY) {
+        if (cordsY || !(playerPositionY + 80 < totalHeight)) {
                 playerPositionY;
                 wrongWay();
             } else {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 180;
                 player.style.transform = `rotate(${deg}deg)`;
-                playerPositionY = getPlayerPosition(setPositionY, "y");
-                if (playerPositionY + 80 < totalHeight) {
-                    playerPositionY += 80;
-                    document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
-                    if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                        winner();
-                    };
+                playerPositionY += 80;
+                document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
+                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
+                    winner();
                 };
             };
     };
@@ -156,7 +153,7 @@
         let cordsY = homesCords.some(home => {
             return (playerPositionX === home.posX && playerPositionY - 80 === home.posY) && !(playerPositionX === deliverCords.posX && playerPositionY - 80 === deliverCords.posY);
         });
-        if (cordsY) {
+        if (cordsY || !(playerPositionY > 0)) {
             playerPositionY;
             wrongWay();
         } else {
@@ -173,13 +170,10 @@
                 deg = 0;
                 player.style.transform = `rotate(${deg}deg)`;
             }
-            playerPositionY = getPlayerPosition(setPositionY, "y");
-            if (playerPositionY > 0) {
-                playerPositionY -= 80;
-                document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
-                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                    winner();
-                };
+            playerPositionY -= 80;
+            document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
+            if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
+                winner();
             };
         };
     };
@@ -255,7 +249,6 @@
     createColumn(560,640,160);
     createRow(240,320,560);
     
-    // Add to every home element class "home"
     const homes = document.querySelectorAll(".home");
     // Create empty array for every home's cords (left, top) values
     let homesCords = [];
