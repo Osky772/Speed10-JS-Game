@@ -27,8 +27,6 @@
     player2.classList.add("player2");
     player2.dataset.px = 'px';
     deliverContainer.prepend(player2);
-    let p1PositionY;
-    let p1PositionX;
     
     // Div for wrong way effect (red flashback) and for winner effect (full green screen with capture "winner")
     const drivingEffect = document.createElement("div");
@@ -37,15 +35,22 @@
     const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue("width").slice(0, -2));
     const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue("height").slice(0, -2));
     
-    function getPlayer1Position(axis) {
-        axis === "x" ? p1PositionX = Number(getComputedStyle(document.documentElement).getPropertyValue(`--p1PositionX`).slice(0, -2)) 
-        : p1PositionY = Number(getComputedStyle(document.documentElement).getPropertyValue(`--p1PositionY`).slice(0, -2));
+    function getPlayerPosition(setPosition, axis) {
+        if (axis === "x") {
+            return Number(getComputedStyle(document.documentElement).getPropertyValue(setPosition).slice(0, -2));
+        } else if (axis === "y") {
+            return Number(getComputedStyle(document.documentElement).getPropertyValue(setPosition).slice(0, -2));
+        }
     };
 
     // Starting position and rotate of player1 
     let deg = 90;
-    getPlayer1Position("y");
-    getPlayer1Position("x");
+    let p1PositionX = getPlayerPosition("--p1PositionX" ,"x");
+    let p1PositionY = getPlayerPosition("--p1PositionY", "y");
+
+    // Starting position and rotate of player2 
+    let p2PositionX = getPlayerPosition(player2 ,"x");
+    let p2PositionY = getPlayerPosition(player2, "y");
 
     function wrongWay() {
         drivingEffect.classList.add("wrong-way");
@@ -54,17 +59,18 @@
         }, 100);
     };
 
-    console.log(player1)
-
     function winner() {
-        window.removeEventListener("keydown", addKeys);
+        window.removeEventListener("keydown", player1Control);
+        window.removeEventListener("keydown", player2Control);
         setTimeout(() => {
             drivingEffect.classList.add("winner");
             drivingEffect.textContent = "Winner!";
         }, 1000);
     };
 
-    function rideRight(player, playerPositionX, playerPositionY) {
+    function rideRight(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
+        playerPositionY = getPlayerPosition(setPositionY ,"y");
+        playerPositionX = getPlayerPosition(setPositionX ,"x");
         let cordsX = homesCords.some(home => {
             // check if player1 position would be the same as any home's position and would not be equal to deliver home cords
             return playerPositionX + 80 === home.posX && playerPositionY === home.posY && !(playerPositionX + 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
@@ -76,116 +82,134 @@
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 90;
                 player.style.transform = `rotate(${deg}deg)`;
-                getPlayer1Position("x");
+                playerPositionX = getPlayerPosition(setPositionX ,"x");
                 if (playerPositionX < totalWidth) {
-                    p1PositionX += 80;
-                    document.documentElement.style.setProperty(`--p1PositionX`, p1PositionX + suffix);
-                    if (playerPositionY === deliverCords.posY && p1PositionX === deliverCords.posX) {
+                    playerPositionX += 80;
+                    document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
+                    if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
                         winner();
                     };
                 };
             };
       };
     
-    function rideLeft() {
+    function rideLeft(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
+        playerPositionY = getPlayerPosition(setPositionY ,"y");
+        playerPositionX = getPlayerPosition(setPositionX ,"x");
         let cordsX = homesCords.some(home => {
-            return p1PositionX - 80 === home.posX && p1PositionY === home.posY && !(p1PositionX - 80 === deliverCords.posX && p1PositionY === deliverCords.posY);
+            return playerPositionX - 80 === home.posX && playerPositionY === home.posY && !(playerPositionX - 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
         });
         if (cordsX) {
-            p1PositionX;
+            playerPositionX;
             wrongWay();
         } else {
             if (deg === 0) {
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
-                player1.style.transform = `rotate(-90deg)`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
+                player.style.transform = `rotate(-90deg)`;
                 setTimeout(() => {
-                    player1.style.transition = `top 0.5s, left 0.5s, transform 0s`;
+                    player.style.transition = `top 0.5s, left 0.5s, transform 0s`;
                     deg = 270;
-                    player1.style.transform = `rotate(${deg}deg)`;
+                    player.style.transform = `rotate(${deg}deg)`;
                 }, 100);
             } else {
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 270;
-                player1.style.transform = `rotate(${deg}deg)`;
+                player.style.transform = `rotate(${deg}deg)`;
             }
-            getPlayer1Position("x");
-            if (p1PositionX > 0) {
-                p1PositionX -= 80;
-                document.documentElement.style.setProperty(`--p1PositionX`, p1PositionX + suffix);
-                if (p1PositionY === deliverCords.posY && p1PositionX === deliverCords.posX) {
+            playerPositionX = getPlayerPosition(setPositionX ,"x");
+            if (playerPositionX > 0) {
+                playerPositionX -= 80;
+                document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
+                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
                     winner();
                 };
             };
         };
     };
-    
-    function rideDown() {
+    function rideDown(player, playerPositionX, playerPositionY ,setPositionX, setPositionY) {
+        playerPositionY = getPlayerPosition(setPositionY, "y");
+        playerPositionX = getPlayerPosition(setPositionX, "x");
         let cordsY = homesCords.some(home => {
-            return p1PositionX === home.posX && p1PositionY + 80 === home.posY && !(p1PositionX === deliverCords.posX && p1PositionY + 80 === deliverCords.posY);
+            return playerPositionX === home.posX && playerPositionY + 80 === home.posY && !(playerPositionX === deliverCords.posX && playerPositionY + 80 === deliverCords.posY);
         });
         if (cordsY) {
-                p1PositionY;
+                playerPositionY;
                 wrongWay();
             } else {
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 180;
-                player1.style.transform = `rotate(${deg}deg)`;
-                getPlayer1Position("y");
-                if (p1PositionY + 80 < totalHeight) {
-                    p1PositionY += 80;
-                    document.documentElement.style.setProperty(`--p1PositionY`, p1PositionY + suffix);
-                    if (p1PositionY === deliverCords.posY && p1PositionX === deliverCords.posX) {
+                player.style.transform = `rotate(${deg}deg)`;
+                playerPositionY = getPlayerPosition(setPositionY, "y");
+                if (playerPositionY + 80 < totalHeight) {
+                    playerPositionY += 80;
+                    document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
+                    if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
                         winner();
                     };
                 };
             };
     };
     
-    function rideTop() {
+    function rideTop(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
+        playerPositionY = getPlayerPosition(setPositionY, "y");
+        playerPositionX = getPlayerPosition(setPositionX, "x");
         let cordsY = homesCords.some(home => {
-            return (p1PositionX === home.posX && p1PositionY - 80 === home.posY) && !(p1PositionX === deliverCords.posX && p1PositionY - 80 === deliverCords.posY);
+            return (playerPositionX === home.posX && playerPositionY - 80 === home.posY) && !(playerPositionX === deliverCords.posX && playerPositionY - 80 === deliverCords.posY);
         });
         if (cordsY) {
-            p1PositionY;
+            playerPositionY;
             wrongWay();
         } else {
             if (deg === 270) {
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 360;
-                player1.style.transform = `rotate(${deg}deg)`;
+                player.style.transform = `rotate(${deg}deg)`;
             } else if (deg === 360){
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0s`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0s`;
                 deg = 0;
-                player1.style.transform = `rotate(${deg}deg)`;
+                player.style.transform = `rotate(${deg}deg)`;
             } else {
-                player1.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
+                player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 0;
-                player1.style.transform = `rotate(${deg}deg)`;
+                player.style.transform = `rotate(${deg}deg)`;
             }
-            getPlayer1Position("y");
-            if (p1PositionY > 0) {
-                p1PositionY -= 80;
-                document.documentElement.style.setProperty(`--p1PositionY`, p1PositionY + suffix);
-                if (p1PositionY === deliverCords.posY && p1PositionX === deliverCords.posX) {
+            playerPositionY = getPlayerPosition(setPositionY, "y");
+            if (playerPositionY > 0) {
+                playerPositionY -= 80;
+                document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
+                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
                     winner();
                 };
             };
         };
     };
     
-    function addKeys(e) {
+    function player1Control(e) {
         if (e.keyCode === 39) {
-            rideRight(player1, p1PositionX, p1PositionY);
+            rideRight(player1, p1PositionX, p1PositionY, "--p1PositionX", "--p1PositionY");
         } else if (e.keyCode === 40) {
-            rideDown();
+            rideDown(player1, p1PositionX, p1PositionY, "--p1PositionX", "--p1PositionY");
         } else if (e.keyCode === 37) {
-            rideLeft();
+            rideLeft(player1, p1PositionX, p1PositionY, "--p1PositionX", "--p1PositionY");
         } else if (e.keyCode === 38) {
-            rideTop();
+            rideTop(player1, p1PositionX, p1PositionY, "--p1PositionX", "--p1PositionY");
+        };
+    };
+
+    function player2Control(e) {
+        if (e.keyCode === 68) {
+            rideRight(player2, p2PositionX, p2PositionY, "--p2PositionX", "--p2PositionY");
+        } else if (e.keyCode === 83) {
+            rideDown(player2, p2PositionX, p2PositionY, "--p2PositionX", "--p2PositionY");
+        } else if (e.keyCode === 65) {
+            rideLeft(player2, p2PositionX, p2PositionY, "--p2PositionX", "--p2PositionY");
+        } else if (e.keyCode === 87) {
+            rideTop(player2, p2PositionX, p2PositionY, "--p2PositionX", "--p2PositionY");
         };
     };
     
-    window.addEventListener("keydown", addKeys);
+    window.addEventListener("keydown", player1Control);
+    window.addEventListener("keydown", player2Control);
     
     /*********************************************
                     CREATE HOUSES
