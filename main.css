@@ -13,33 +13,6 @@ html, body {
     overflow: hidden;
 }
 
-.container {
-    width: 1200px;
-    height: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.box {
-    font-size: 12rem;
-    position: relative;
-}
-
-.animal {
-    position: absolute;
-    font-size: 3rem;
-    padding: 0.4rem;
-    top: -4rem;
-    line-height: 1;
-    left: calc(0%);
-    transition: all .5s;
-    transform: translateY(0);
-    transform: translateX(0);
-    z-index: 9999;
-}
-
 .animation {
     animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
 }
@@ -61,10 +34,6 @@ html, body {
       transform: translateX(4px);
     }
 }
-
-/*********************************
-    STYLES FOR DELIVER GAME
-**********************************/
 
 :root {
     --carPositionX: 0px;

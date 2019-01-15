@@ -1,37 +1,59 @@
 // app should have way to add player 2 with driving with keys "wsad"
 // app should have way to display coins randomly on "streets" it's everywhere exclude houses
-// app should have way to display coins in an interval of 2 - 3 seconds
 // app should have way to collect coins by players (then coins should disappear)
+// app should have way to display another coins after player get the currently displayed coin
+// app should have way to display current state of collected coins for each player
+// app should have way to finish after 2 minutes 
+// *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
 // *** app should have way to select color of car of every player ***
-// app should have way to display cuurect state of collected coins for each player
-// app should have way to finish after collected 20 coins by player 
 // *** coins would have rotation 3D ***
 
 (function(){
     const body = document.querySelector("body");
-    
     const deliverContainer = document.createElement("div")
     deliverContainer.classList.add("deliver-map");
     body.prepend(deliverContainer);
-
     const car = document.createElement("div");
     car.classList.add("car");
     car.dataset.px = 'px';
     const suffix = car.dataset.px;
     deliverContainer.prepend(car);
+    let carPositionY;
+    let carPositionX;
     
     // Div for wrong way effect (red flashback) and for winner effect (full green screen with capture "winner")
     const drivingEffect = document.createElement("div");
     body.prepend(drivingEffect);
 
-    // Starting position and rotate of car 
-    let deg = 90;
-    let carPositionY = 0;
-    let carPositionX = 0;
-    
     const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue("width").slice(0, -2));
     const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue("height").slice(0, -2));
     
+    function getCarPosition(axis) {
+        axis === "x" ? carPositionX = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionX`).slice(0, -2)) 
+        : carPositionY = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionY`).slice(0, -2));
+        
+    };
+
+    // Starting position and rotate of car 
+    let deg = 90;
+    getCarPosition("y");
+    getCarPosition("x");
+
+    function wrongWay() {
+        drivingEffect.classList.add("wrong-way");
+        setTimeout(() => {
+            drivingEffect.classList.remove("wrong-way");
+        }, 100);
+    };
+
+    function winner() {
+        window.removeEventListener("keydown", addKeys);
+        setTimeout(() => {
+            drivingEffect.classList.add("winner");
+            drivingEffect.textContent = "Winner!";
+        }, 1000);
+    };
+
     function rideRight() {
         let cordsX = homesCords.some(home => {
             // check if car position would be the same as any home's position and would not be equal to deliver home cords
@@ -39,24 +61,17 @@
         });
         if (cordsX) {
                 carPositionX;
-                drivingEffect.classList.add("wrong-way");
-                setTimeout(() => {
-                    drivingEffect.classList.remove("wrong-way");
-                }, 100);
+                wrongWay();
             } else {
                 car.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 90;
                 car.style.transform = `rotate(${deg}deg)`;
-                carPositionX = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionX`).slice(0, -2));
+                getCarPosition("x");
                 if (carPositionX < totalWidth) {
                     carPositionX += 80;
                     document.documentElement.style.setProperty(`--carPositionX`, carPositionX + suffix);
                     if (carPositionY === deliverCords.posY && carPositionX === deliverCords.posX) {
-                        window.removeEventListener("keydown", addKeys);
-                        setTimeout(() => {
-                            drivingEffect.classList.add("winner");
-                            drivingEffect.textContent = "Winner!";
-                        }, 1000);
+                        winner();
                     };
                 };
             };
@@ -68,10 +83,7 @@
         });
         if (cordsX) {
             carPositionX;
-            drivingEffect.classList.add("wrong-way");
-            setTimeout(() => {
-                drivingEffect.classList.remove("wrong-way");
-            }, 100);
+            wrongWay();
         } else {
             if (deg === 0) {
                 car.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -86,16 +98,12 @@
                 deg = 270;
                 car.style.transform = `rotate(${deg}deg)`;
             }
-            carPositionX = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionX`).slice(0, -2));
+            getCarPosition("x");
             if (carPositionX > 0) {
                 carPositionX -= 80;
                 document.documentElement.style.setProperty(`--carPositionX`, carPositionX + suffix);
                 if (carPositionY === deliverCords.posY && carPositionX === deliverCords.posX) {
-                    window.removeEventListener("keydown", addKeys);
-                    setTimeout(() => {
-                        drivingEffect.classList.add("winner");
-                        drivingEffect.textContent = "Winner!";
-                    }, 1000);
+                    winner();
                 };
             };
         };
@@ -107,24 +115,17 @@
         });
         if (cordsY) {
                 carPositionY;
-                drivingEffect.classList.add("wrong-way");
-                setTimeout(() => {
-                    drivingEffect.classList.remove("wrong-way");
-                }, 100);
+                wrongWay();
             } else {
                 car.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 180;
                 car.style.transform = `rotate(${deg}deg)`;
-                carPositionY = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionY`).slice(0, -2));
+                getCarPosition("y");
                 if (carPositionY + 80 < totalHeight) {
                     carPositionY += 80;
                     document.documentElement.style.setProperty(`--carPositionY`, carPositionY + suffix);
                     if (carPositionY === deliverCords.posY && carPositionX === deliverCords.posX) {
-                        window.removeEventListener("keydown", addKeys);
-                        setTimeout(() => {
-                            drivingEffect.classList.add("winner");
-                            drivingEffect.textContent = "Winner!";
-                        }, 1000);
+                        winner();
                     };
                 };
             };
@@ -136,10 +137,7 @@
         });
         if (cordsY) {
             carPositionY;
-            drivingEffect.classList.add("wrong-way");
-            setTimeout(() => {
-                drivingEffect.classList.remove("wrong-way");
-            }, 100);
+            wrongWay();
         } else {
             if (deg === 270) {
                 car.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -154,16 +152,12 @@
                 deg = 0;
                 car.style.transform = `rotate(${deg}deg)`;
             }
-            carPositionY = Number(getComputedStyle(document.documentElement).getPropertyValue(`--carPositionY`).slice(0, -2));
+            getCarPosition("y");
             if (carPositionY > 0) {
                 carPositionY -= 80;
                 document.documentElement.style.setProperty(`--carPositionY`, carPositionY + suffix);
                 if (carPositionY === deliverCords.posY && carPositionX === deliverCords.posX) {
-                    window.removeEventListener("keydown", addKeys);
-                    setTimeout(() => {
-                        drivingEffect.classList.add("winner");
-                        drivingEffect.textContent = "Winner!";
-                    }, 1000);
+                    winner();
                 };
             };
         };
