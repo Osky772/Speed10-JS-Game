@@ -8,31 +8,29 @@ html, body {
     margin: 0;
     padding: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
 
-.animation {
-    animation: shake 0.3s cubic-bezier(.36,.07,.19,.97) both;
+header {
+    width: 100%;
+    max-width: 1120px;
+    display: flex;
+    justify-content: space-between;
 }
 
-@keyframes shake {
-    10%, 90% {
-      transform: translateX(-1px);
-    }
-    
-    20%, 80% {
-      transform: translateX(2px);
-    }
-  
-    30%, 50%, 70% {
-      transform: translateX(-4px);
-    }
-  
-    40%, 60% {
-      transform: translateX(4px);
-    }
+.player {
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time {
+    font-size: 3rem;
+    align-self: center;
 }
 
 :root {

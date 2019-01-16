@@ -1,5 +1,3 @@
-// app should have way to collect coins by players (then coins should disappear)
-// app should have way to display another coins after player get the currently displayed coin
 // app should have way to display current state of collected coins for each player
 // app should have way to finish after 2 minutes 
 // *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
@@ -8,9 +6,7 @@
 
 (function(){
     const body = document.querySelector("body");
-    const deliverContainer = document.createElement("div")
-    deliverContainer.classList.add("deliver-map");
-    body.prepend(deliverContainer);
+    const deliverContainer = document.querySelector(".deliver-map")
     let coinEl;
     let coinTop = 0;
     let coinLeft = 0;
@@ -22,6 +18,7 @@
     player1.dataset.px = 'px';
     const suffix = player1.dataset.px;
     deliverContainer.prepend(player1);
+    const player1ScoreHeader = document.querySelector(".player-one__score");
     let player1Score = 0;
     //create player2
     const player2 = document.createElement("div");
@@ -29,6 +26,7 @@
     player2.classList.add("player2");
     player2.dataset.px = 'px';
     deliverContainer.prepend(player2);
+    const player2ScoreHeader = document.querySelector(".player-two__score");
     let player2Score = 0;
 
     // Get total width and height of map container
@@ -271,6 +269,7 @@
                 coinTop = coinPosY;
                 coinLeft = coinPosX;
             };
+            !isOnStreet;
         };
     };
     createCoins();
@@ -278,10 +277,10 @@
     function getCoin(player) {
         if (player.classList.contains("player1")) {
             player1Score += 1;
-            console.log("P1 Score: ", player1Score);
+            player1ScoreHeader.textContent = player1Score;
         } else if (player.classList.contains("player2")) {
             player2Score += 1;
-            console.log("P2 Score: ", player2Score);
+            player2ScoreHeader.textContent = player2Score;
         }
         coinEl.remove();
         setTimeout(function() {
