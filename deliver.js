@@ -73,17 +73,7 @@
                 playerPositionX += 80;
                 document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
                 if (playerPositionY === coinTop && playerPositionX === coinLeft) {
-                    if (player.classList.contains("player1")) {
-                        player1Score += 1;
-                        console.log("P1 Score: ", player1Score);
-                    } else if (player.classList.contains("player2")) {
-                        player2Score += 1;
-                        console.log("P2 Score: ", player2Score);
-                    }
-                    coinEl.remove();
-                    setTimeout(function() {
-                        createCoins();
-                    }, 1000);
+                    getCoin(player);
                 };
             };
       };
@@ -113,11 +103,7 @@
             playerPositionX -= 80;
             document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
             if (playerPositionY === coinTop && playerPositionX === coinLeft) {
-                console.log("That is coin!");
-                coinEl.remove();
-                setTimeout(function() {
-                    createCoins();
-                }, 1000);
+                getCoin(player);
             };
         };
     };
@@ -136,11 +122,7 @@
                 playerPositionY += 80;
                 document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
                 if (playerPositionY === coinTop && playerPositionX === coinLeft) {
-                    console.log("That is coin!");
-                    coinEl.remove();
-                    setTimeout(function() {
-                        createCoins();
-                    }, 1000);
+                    getCoin(player);
                 };
             };
     };
@@ -170,11 +152,7 @@
             playerPositionY -= 80;
             document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
             if (playerPositionY === coinTop && playerPositionX === coinLeft) {
-                console.log("That is coin!");
-                coinEl.remove();
-                setTimeout(function() {
-                    createCoins();
-                }, 1000);
+                getCoin(player);
             };
         };
     };
@@ -266,7 +244,12 @@
         });
     });
 
-    // Create coins random on street
+    
+
+    /***********************************  
+            CREATE COINS
+    ***********************************/
+
     function createCoins() {
         let isOnStreet = false;
         for (let i = 0; !isOnStreet; i++) {
@@ -291,8 +274,20 @@
         };
     };
     createCoins();
-    console.log(coinEl);
-    console.log(coinTop);
-    console.log(coinLeft);
+
+    function getCoin(player) {
+        if (player.classList.contains("player1")) {
+            player1Score += 1;
+            console.log("P1 Score: ", player1Score);
+        } else if (player.classList.contains("player2")) {
+            player2Score += 1;
+            console.log("P2 Score: ", player2Score);
+        }
+        coinEl.remove();
+        setTimeout(function() {
+            createCoins();
+        }, 1000);
+    }
+
 }());
 
