@@ -1,4 +1,3 @@
-// app should have way to display current state of collected coins for each player
 // app should have way to finish after 2 minutes 
 // *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
 // *** app should have way to select color of player1 of every player ***
@@ -7,10 +6,17 @@
 (function(){
     const body = document.querySelector("body");
     const deliverContainer = document.querySelector(".deliver-map")
+    // coin element's cords
     let coinEl;
     let coinTop = 0;
     let coinLeft = 0;
-
+    // timer values
+    const minutes = document.querySelector(".minutes")
+    const seconds = document.querySelector(".seconds")
+    const mins = 2;
+    let totalSeconds = mins * 60;
+    minutes.textContent = mins + "";
+    seconds.textContent = "00";
     //create player1
     const player1 = document.createElement("div");
     player1.classList.add("car");
@@ -229,7 +235,6 @@
     createRow(240,320,560);
     
     const homes = document.querySelectorAll(".home");
-    console.log(homes);
     // Create empty array for every home's cords (left, top) values
     let homesCords = [];
     
@@ -268,10 +273,16 @@
                 coinEl = document.querySelector(".coin");
                 coinTop = coinPosY;
                 coinLeft = coinPosX;
+                // Check for bug with doubled coins
+                const checkWrongCoins = document.querySelectorAll(".coin");
+                if (checkWrongCoins.length > 1) {
+                    checkWrongCoins[1].remove();
+                };
             };
             !isOnStreet;
         };
     };
+
     createCoins();
 
     function getCoin(player) {
@@ -286,7 +297,27 @@
         setTimeout(function() {
             createCoins();
         }, 1000);
+    };
+
+    /**************************************
+                    TIMER
+    ***************************************/
+
+    function timer() {
+        --totalSeconds;
+        seconds.textContent = formatTimer(totalSeconds % 60);
+        minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
     }
+
+    function formatTimer(val) {
+        let valString = `${val}`;
+        if (valString.length < 2) {
+            return `0${valString}`;
+        } else {
+            return valString;
+        };
+    };
+    setInterval(timer, 1000);
 
 }());
 
