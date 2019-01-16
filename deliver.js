@@ -1,4 +1,3 @@
-// app should have way to finish after 2 minutes 
 // *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
 // *** app should have way to select color of player1 of every player ***
 // *** coins would have rotation 3D ***
@@ -34,7 +33,6 @@
     deliverContainer.prepend(player2);
     const player2ScoreHeader = document.querySelector(".player-two__score");
     let player2Score = 0;
-
     // Get total width and height of map container
     const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue("width").slice(0, -2));
     const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue("height").slice(0, -2));
@@ -46,7 +44,6 @@
             return Number(getComputedStyle(document.documentElement).getPropertyValue(setPosition).slice(0, -2));
         }
     };
-
     // Starting position and rotate of player1 
     let deg = 90;
     let p1PositionX = getPlayerPosition("--p1PositionX" ,"x");
@@ -294,20 +291,26 @@
             player2ScoreHeader.textContent = player2Score;
         }
         coinEl.remove();
-        setTimeout(function() {
+        setTimeout(() => {
             createCoins();
         }, 1000);
     };
 
     /**************************************
-                    TIMER
+            TIMER AND FINISH GAME
     ***************************************/
 
-    function timer() {
+    const timer = setInterval(function() {
+        if (totalSeconds === 0) {
+            window.removeEventListener("keyup", player1Control);
+            window.removeEventListener("keyup", player2Control);
+            clearInterval(timer);
+            return;
+        };
         --totalSeconds;
         seconds.textContent = formatTimer(totalSeconds % 60);
         minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
-    }
+    }, 1000);
 
     function formatTimer(val) {
         let valString = `${val}`;
@@ -317,7 +320,7 @@
             return valString;
         };
     };
-    setInterval(timer, 1000);
+    
 
 }());
 
