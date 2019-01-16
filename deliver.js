@@ -300,10 +300,18 @@
             TIMER AND FINISH GAME
     ***************************************/
 
+    const finishGame = document.createElement("div");
+    const winnerLabel = document.createElement("div");
+    winnerLabel.classList.add("winner");
+    finishGame.classList.add("finish-game-disabled");
+    finishGame.prepend(winnerLabel);
+    body.prepend(finishGame);
+
     const timer = setInterval(function() {
         if (totalSeconds === 0) {
             window.removeEventListener("keyup", player1Control);
             window.removeEventListener("keyup", player2Control);
+            winner();
             clearInterval(timer);
             return;
         };
@@ -320,6 +328,19 @@
             return valString;
         };
     };
+
+    function winner() {
+        finishGame.classList.add("finish-game-enabled");
+        if (player1Score > player2Score) {
+            winnerLabel.innerHTML = `<p style="text-align: center">player 1 wins!</p> 
+            <p style="text-align: center">score: ${player1Score}</p>` ;
+        } else if (player2Score > player1Score) {
+            winnerLabel.innerHTML = `<p style="text-align: center">player 2 wins!</p> 
+            <p style="text-align: center">score: ${player2Score}</p>` ;
+        } else {
+            winnerLabel.textContent = "Ayy.. it's draw...";
+        };
+    }
     
 
 }());

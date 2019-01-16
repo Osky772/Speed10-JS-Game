@@ -92,27 +92,34 @@ header {
     position: absolute;
     width: 80px;
     height: 80px;
+    animation: rotateCoin 2s linear infinite;
 }
+
+@keyframes rotateCoin {
+    from {
+        transform: rotateY(0deg);
+    }
+  
+    to {
+        transform: rotateY(360deg);
+    }
+  }
+  
+  div {
+    animation-duration: 0.1s;
+    animation-name: changewidth;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
 
 .deliver {
     background: red;
     border: 1px solid green;
 }
 
-.wrong-way {
+.finish-game-disabled {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 99999;
-    background-color: red;
-    transition: all 0.1s;
-}
-
-.winner {
-    position: absolute;
-    top: 0;
+    top: -100%;
     left: 0;
     width: 100vw;
     height: 100vh;
@@ -123,4 +130,14 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: all 2s ease;
+}
+
+.winner {
+    font-size: 5rem;
+    color: white;
+}
+
+.finish-game-enabled {
+    top: 0;
 }
