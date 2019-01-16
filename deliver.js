@@ -1,4 +1,3 @@
-// app should have way to display coins randomly on "streets" it's everywhere exclude houses
 // app should have way to collect coins by players (then coins should disappear)
 // app should have way to display another coins after player get the currently displayed coin
 // app should have way to display current state of collected coins for each player
@@ -12,6 +11,9 @@
     const deliverContainer = document.createElement("div")
     deliverContainer.classList.add("deliver-map");
     body.prepend(deliverContainer);
+    let coinEl;
+    let coinTop = 0;
+    let coinLeft = 0;
 
     //create player1
     const player1 = document.createElement("div");
@@ -20,17 +22,16 @@
     player1.dataset.px = 'px';
     const suffix = player1.dataset.px;
     deliverContainer.prepend(player1);
+    let player1Score = 0;
     //create player2
     const player2 = document.createElement("div");
     player2.classList.add("car");
     player2.classList.add("player2");
     player2.dataset.px = 'px';
     deliverContainer.prepend(player2);
-    
-    // Div for wrong way effect (red flashback) and for winner effect (full green screen with capture "winner")
-    const drivingEffect = document.createElement("div");
-    body.prepend(drivingEffect);
+    let player2Score = 0;
 
+    // Get total width and height of map container
     const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue("width").slice(0, -2));
     const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue("height").slice(0, -2));
     
@@ -50,30 +51,18 @@
     let p2PositionX = getPlayerPosition(player2 ,"x");
     let p2PositionY = getPlayerPosition(player2, "y");
 
-    
 
-    /* function wrongWay() {
-        drivingEffect.classList.add("wrong-way");
-        setTimeout(() => {
-            drivingEffect.classList.remove("wrong-way");
-        }, 100);
-    }; */
 
-    function winner() {
-        window.removeEventListener("keydown", player1Control);
-        window.removeEventListener("keydown", player2Control);
-        setTimeout(() => {
-            drivingEffect.classList.add("winner");
-            drivingEffect.textContent = "Winner!";
-        }, 1000);
-    };
+    /********************************************
+            FUNCTIONS FOR DRIVING
+    ********************************************/
 
     function rideRight(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
         playerPositionY = getPlayerPosition(setPositionY ,"y");
         playerPositionX = getPlayerPosition(setPositionX ,"x");
         let cordsX = homesCords.some(home => {
             // check if player's position would be the same as any home's position and would not be equal to deliver home cords
-            return playerPositionX + 80 === home.posX && playerPositionY === home.posY && !(playerPositionX + 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
+            return playerPositionX + 80 === home.posX && playerPositionY === home.posY;
         });
         if (cordsX || !(playerPositionX < totalWidth)) {
                 playerPositionX;
@@ -83,8 +72,18 @@
                 player.style.transform = `rotate(${deg}deg)`;
                 playerPositionX += 80;
                 document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
-                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                    winner();
+                if (playerPositionY === coinTop && playerPositionX === coinLeft) {
+                    if (player.classList.contains("player1")) {
+                        player1Score += 1;
+                        console.log("P1 Score: ", player1Score);
+                    } else if (player.classList.contains("player2")) {
+                        player2Score += 1;
+                        console.log("P2 Score: ", player2Score);
+                    }
+                    coinEl.remove();
+                    setTimeout(function() {
+                        createCoins();
+                    }, 1000);
                 };
             };
       };
@@ -93,7 +92,7 @@
         playerPositionY = getPlayerPosition(setPositionY ,"y");
         playerPositionX = getPlayerPosition(setPositionX ,"x");
         let cordsX = homesCords.some(home => {
-            return playerPositionX - 80 === home.posX && playerPositionY === home.posY && !(playerPositionX - 80 === deliverCords.posX && playerPositionY === deliverCords.posY);
+            return playerPositionX - 80 === home.posX && playerPositionY === home.posY;
         });
         if (cordsX || !(playerPositionX > 0)) {
             playerPositionX;
@@ -113,8 +112,12 @@
             }
             playerPositionX -= 80;
             document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
-            if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                winner();
+            if (playerPositionY === coinTop && playerPositionX === coinLeft) {
+                console.log("That is coin!");
+                coinEl.remove();
+                setTimeout(function() {
+                    createCoins();
+                }, 1000);
             };
         };
     };
@@ -122,7 +125,7 @@
         playerPositionY = getPlayerPosition(setPositionY, "y");
         playerPositionX = getPlayerPosition(setPositionX, "x");
         let cordsY = homesCords.some(home => {
-            return playerPositionX === home.posX && playerPositionY + 80 === home.posY && !(playerPositionX === deliverCords.posX && playerPositionY + 80 === deliverCords.posY);
+            return playerPositionX === home.posX && playerPositionY + 80 === home.posY;
         });
         if (cordsY || !(playerPositionY + 80 < totalHeight)) {
                 playerPositionY;
@@ -132,8 +135,12 @@
                 player.style.transform = `rotate(${deg}deg)`;
                 playerPositionY += 80;
                 document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
-                if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                    winner();
+                if (playerPositionY === coinTop && playerPositionX === coinLeft) {
+                    console.log("That is coin!");
+                    coinEl.remove();
+                    setTimeout(function() {
+                        createCoins();
+                    }, 1000);
                 };
             };
     };
@@ -142,7 +149,7 @@
         playerPositionY = getPlayerPosition(setPositionY, "y");
         playerPositionX = getPlayerPosition(setPositionX, "x");
         let cordsY = homesCords.some(home => {
-            return (playerPositionX === home.posX && playerPositionY - 80 === home.posY) && !(playerPositionX === deliverCords.posX && playerPositionY - 80 === deliverCords.posY);
+            return (playerPositionX === home.posX && playerPositionY - 80 === home.posY);
         });
         if (cordsY || !(playerPositionY > 0)) {
             playerPositionY;
@@ -162,8 +169,12 @@
             }
             playerPositionY -= 80;
             document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
-            if (playerPositionY === deliverCords.posY && playerPositionX === deliverCords.posX) {
-                winner();
+            if (playerPositionY === coinTop && playerPositionX === coinLeft) {
+                console.log("That is coin!");
+                coinEl.remove();
+                setTimeout(function() {
+                    createCoins();
+                }, 1000);
             };
         };
     };
@@ -195,6 +206,8 @@
     window.addEventListener("keyup", player1Control);
     window.addEventListener("keyup", player2Control);
     
+
+
     /*********************************************
                     CREATE HOUSES
     **********************************************/
@@ -253,19 +266,7 @@
         });
     });
 
-    console.log(homesCords);
-    
-    /* function createCoin() {
-        const coin = document.createElement("div");
-        coin.classList.add("coin");
-        deliverContainer.prepend(coin);
-        // const coinEl = document.querySelectorAll(".coin");
-        // console.log(coinEl);
-    };
-
-    createCoin();
-
- */
+    // Create coins random on street
     function createCoins() {
         let isOnStreet = false;
         for (let i = 0; !isOnStreet; i++) {
@@ -283,21 +284,15 @@
                 coin.style.top = `${coinPosY}px`
                 deliverContainer.prepend(coin);
                 isOnStreet = true;
+                coinEl = document.querySelector(".coin");
+                coinTop = coinPosY;
+                coinLeft = coinPosX;
             };
-            console.log(isOnStreet);
         };
     };
-
     createCoins();
-
-
-    /* // Choose house to deliver
-    function deliverTo() {
-        const index = Math.floor(Math.random() * homes.length);
-        homes[index].classList.add("deliver");
-        return homesCords[index];
-    };
-    // Then I refer to that cords when player1 is driving (above in code)
-    const deliverCords = deliverTo(); */
+    console.log(coinEl);
+    console.log(coinTop);
+    console.log(coinLeft);
 }());
 
