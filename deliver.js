@@ -50,20 +50,14 @@
     let p2PositionX = getPlayerPosition(player2 ,"x");
     let p2PositionY = getPlayerPosition(player2, "y");
 
-    function createCoin() {
-        const coin = document.createElement("div");
-        coin.classList.add("coin");
-        deliverContainer.prepend(coin);
-    };
+    
 
-    createCoin();
-
-    function wrongWay() {
+    /* function wrongWay() {
         drivingEffect.classList.add("wrong-way");
         setTimeout(() => {
             drivingEffect.classList.remove("wrong-way");
         }, 100);
-    };
+    }; */
 
     function winner() {
         window.removeEventListener("keydown", player1Control);
@@ -83,7 +77,6 @@
         });
         if (cordsX || !(playerPositionX < totalWidth)) {
                 playerPositionX;
-                wrongWay();
             } else {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 90;
@@ -104,7 +97,6 @@
         });
         if (cordsX || !(playerPositionX > 0)) {
             playerPositionX;
-            wrongWay();
         } else {
             if (deg === 0) {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -134,7 +126,6 @@
         });
         if (cordsY || !(playerPositionY + 80 < totalHeight)) {
                 playerPositionY;
-                wrongWay();
             } else {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
                 deg = 180;
@@ -155,7 +146,6 @@
         });
         if (cordsY || !(playerPositionY > 0)) {
             playerPositionY;
-            wrongWay();
         } else {
             if (deg === 270) {
                 player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -202,8 +192,8 @@
         };
     };
     
-    window.addEventListener("keydown", player1Control);
-    window.addEventListener("keydown", player2Control);
+    window.addEventListener("keyup", player1Control);
+    window.addEventListener("keyup", player2Control);
     
     /*********************************************
                     CREATE HOUSES
@@ -250,6 +240,7 @@
     createRow(240,320,560);
     
     const homes = document.querySelectorAll(".home");
+    console.log(homes);
     // Create empty array for every home's cords (left, top) values
     let homesCords = [];
     
@@ -261,14 +252,52 @@
             posX : Number(getComputedStyle(home).getPropertyValue("left").slice(0, -2)),
         });
     });
+
+    console.log(homesCords);
     
-    // Choose house to deliver
+    /* function createCoin() {
+        const coin = document.createElement("div");
+        coin.classList.add("coin");
+        deliverContainer.prepend(coin);
+        // const coinEl = document.querySelectorAll(".coin");
+        // console.log(coinEl);
+    };
+
+    createCoin();
+
+ */
+    function createCoins() {
+        let isOnStreet = false;
+        for (let i = 0; !isOnStreet; i++) {
+            const coinPosY = Math.floor(Math.random() * 8) * 80;
+            const coinPosX = Math.floor(Math.random() * 14) * 80;
+
+            isOnHome = homesCords.some(function(home) {
+                return home.posX === coinPosX && home.posY === coinPosY;
+            });
+
+            if (!isOnHome) {
+                const coin = document.createElement("div");
+                coin.classList.add("coin");
+                coin.style.left = `${coinPosX}px`
+                coin.style.top = `${coinPosY}px`
+                deliverContainer.prepend(coin);
+                isOnStreet = true;
+            };
+            console.log(isOnStreet);
+        };
+    };
+
+    createCoins();
+
+
+    /* // Choose house to deliver
     function deliverTo() {
         const index = Math.floor(Math.random() * homes.length);
         homes[index].classList.add("deliver");
         return homesCords[index];
     };
     // Then I refer to that cords when player1 is driving (above in code)
-    const deliverCords = deliverTo();
+    const deliverCords = deliverTo(); */
 }());
 
