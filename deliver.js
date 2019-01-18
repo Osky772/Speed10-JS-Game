@@ -52,14 +52,14 @@
     let p2PositionY = getPlayerPosition(player2, "y");
 
     // START GAME WITH ENTER
-    function startGame() {
+    function startGame(e) {
         if (e.keyCode === 13) {
             startTimer();            
             createCoins();
             window.addEventListener("keyup", player1Control);
             window.addEventListener("keyup", player2Control);
-            window.removeEventListener('keydown', startGame);
         };
+        window.removeEventListener('keydown', startGame);
     };
     window.addEventListener('keydown', startGame);
 
