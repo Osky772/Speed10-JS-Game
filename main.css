@@ -51,11 +51,11 @@ header {
 }
 
 .home {
+    background-image: url("img/bulding-top-4.png");
     position: absolute;
     width: 80px;
     height: 80px;
-    background: black;
-    border: 1px solid red;
+    
 }
 
 .car {

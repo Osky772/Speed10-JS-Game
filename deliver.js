@@ -1,6 +1,5 @@
 // *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
 // *** app should have way to select color of player1 of every player ***
-// *** coins would have rotation 3D ***
 
 (function(){
     const body = document.querySelector("body");
@@ -52,7 +51,17 @@
     let p2PositionX = getPlayerPosition(player2 ,"x");
     let p2PositionY = getPlayerPosition(player2, "y");
 
-
+    // START GAME WITH ENTER
+    function startGame() {
+        if (e.keyCode === 13) {
+            startTimer();            
+            createCoins();
+            window.addEventListener("keyup", player1Control);
+            window.addEventListener("keyup", player2Control);
+            window.removeEventListener('keydown', startGame);
+        };
+    };
+    window.addEventListener('keydown', startGame);
 
     /********************************************
             FUNCTIONS FOR DRIVING
@@ -182,9 +191,6 @@
         };
     };
     
-    window.addEventListener("keyup", player1Control);
-    window.addEventListener("keyup", player2Control);
-    
 
 
     /*********************************************
@@ -275,12 +281,10 @@
                 if (checkWrongCoins.length > 1) {
                     checkWrongCoins[1].remove();
                 };
+                !isOnStreet;
             };
-            !isOnStreet;
         };
     };
-
-    createCoins();
 
     function getCoin(player) {
         if (player.classList.contains("player1")) {
@@ -307,18 +311,20 @@
     finishGame.prepend(winnerLabel);
     body.prepend(finishGame);
 
-    const timer = setInterval(function() {
-        if (totalSeconds === 0) {
-            window.removeEventListener("keyup", player1Control);
-            window.removeEventListener("keyup", player2Control);
-            winner();
-            clearInterval(timer);
-            return;
-        };
-        --totalSeconds;
-        seconds.textContent = formatTimer(totalSeconds % 60);
-        minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
-    }, 1000);
+    function startTimer() {
+        const timer = setInterval(function() {
+            if (totalSeconds === 0) {
+                window.removeEventListener("keyup", player1Control);
+                window.removeEventListener("keyup", player2Control);
+                winner();
+                clearInterval(timer);
+                return;
+            };
+            --totalSeconds;
+            seconds.textContent = formatTimer(totalSeconds % 60);
+            minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
+        }, 1000);
+    };
 
     function formatTimer(val) {
         let valString = `${val}`;
@@ -340,8 +346,7 @@
         } else {
             winnerLabel.textContent = "Ayy.. it's draw...";
         };
-    }
-    
+    };
 
 }());
 
