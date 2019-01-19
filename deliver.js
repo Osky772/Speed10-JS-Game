@@ -259,6 +259,7 @@
     function createCoins() {
         let isOnStreet = false;
         for (let i = 0; !isOnStreet; i++) {
+            console.log('i: ',i)
             const coinPosY = Math.floor(Math.random() * 8) * 80;
             const coinPosX = Math.floor(Math.random() * 14) * 80;
 
@@ -272,32 +273,31 @@
                 coin.style.left = `${coinPosX}px`
                 coin.style.top = `${coinPosY}px`
                 deliverContainer.prepend(coin);
-                isOnStreet = true;
                 coinEl = document.querySelector(".coin");
                 coinTop = coinPosY;
                 coinLeft = coinPosX;
                 // Check for bug with doubled coins
                 const checkWrongCoins = document.querySelectorAll(".coin");
+                console.log('wrong coins: ',checkWrongCoins)
                 if (checkWrongCoins.length > 1) {
                     checkWrongCoins[1].remove();
                 };
-                !isOnStreet;
+                isOnStreet = true;
             };
         };
     };
 
     function getCoin(player) {
         if (player.classList.contains("player1")) {
+            coinEl.remove();
             player1Score += 1;
             player1ScoreHeader.textContent = player1Score;
         } else if (player.classList.contains("player2")) {
             player2Score += 1;
             player2ScoreHeader.textContent = player2Score;
         }
-        coinEl.remove();
-        setTimeout(() => {
-            createCoins();
-        }, 1000);
+        console.log(coinEl);
+        createCoins();
     };
 
     /**************************************
