@@ -11,7 +11,7 @@
     // timer values
     const minutes = document.querySelector(".minutes")
     const seconds = document.querySelector(".seconds")
-    const mins = 2;
+    const mins = .15;
     let totalSeconds = mins * 60;
     minutes.textContent = mins + "";
     seconds.textContent = "00";
@@ -259,7 +259,6 @@
     function createCoins() {
         let isOnStreet = false;
         for (let i = 0; !isOnStreet; i++) {
-            console.log('i: ',i)
             const coinPosY = Math.floor(Math.random() * 8) * 80;
             const coinPosX = Math.floor(Math.random() * 14) * 80;
 
@@ -268,6 +267,7 @@
             });
 
             if (!isOnHome) {
+                console.log(totalSeconds)
                 const coin = document.createElement("div");
                 coin.classList.add("coin");
                 coin.style.left = `${coinPosX}px`
@@ -278,7 +278,6 @@
                 coinLeft = coinPosX;
                 // Check for bug with doubled coins
                 const checkWrongCoins = document.querySelectorAll(".coin");
-                console.log('wrong coins: ',checkWrongCoins)
                 if (checkWrongCoins.length > 1) {
                     checkWrongCoins[1].remove();
                 };
@@ -313,6 +312,9 @@
 
     function startTimer() {
         const timer = setInterval(function() {
+            --totalSeconds;
+            seconds.textContent = formatTimer(totalSeconds % 60);
+            minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
             if (totalSeconds === 0) {
                 window.removeEventListener("keyup", player1Control);
                 window.removeEventListener("keyup", player2Control);
@@ -320,9 +322,6 @@
                 clearInterval(timer);
                 return;
             };
-            --totalSeconds;
-            seconds.textContent = formatTimer(totalSeconds % 60);
-            minutes.textContent = formatTimer(parseInt(totalSeconds / 60));
         }, 1000);
     };
 
