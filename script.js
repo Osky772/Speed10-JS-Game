@@ -1,4 +1,3 @@
-// *** app should have way to generate one random house after 45 seconds where player can drive in and get extra 10 coins ***
 // *** app should have way to select color of player1 of every player ***
 
 (function() {
@@ -257,9 +256,9 @@
 	function createCoins() {
 		let isOnStreet = false;
 
+		// Create Extra coin
 		if (!extraCoinCreated) {
 			extraCoinTime = totalSeconds - Math.ceil(Math.random() * 30);
-			console.log(extraCoinTime);
 			extraCoinCreated = true;
 		}
 		for (let i = 0; !isOnStreet; i++) {
@@ -285,8 +284,8 @@
 					checkWrongCoins[1].remove();
 				}
 				isOnStreet = true;
+				// Display extra coin
 				if (totalSeconds <= extraCoinTime && extraCoinCreated) {
-					console.log('Extra coin soon...');
 					coin.classList.add('gold');
 					extraCoinCreated = false;
 				}
