@@ -16,6 +16,23 @@ html, body {
 
 }
 
+.intro {
+    background-image: url("img/intro.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    font-size: 8rem;
+    color: #fff;
+}
+
 .deliver-game-container {
     display: none;
 }
@@ -135,6 +152,7 @@ header {
 }
 
 .finish-game-disabled {
+    display: none;
     position: absolute;
     top: -100%;
     left: 0;
