@@ -13,9 +13,10 @@
 	// set timer
 	const mins = 2;
 	let totalSeconds = mins * 60;
-	let minutes;
-	let seconds;
-	createTimerHtml();
+	const minutes = document.querySelector('.minutes');
+	minutes.textContent = '0' + mins;
+	const seconds = document.querySelector('.seconds');
+	seconds.textContent = '00';
 	//create player1
 	const player1 = document.createElement('div');
 	player1.classList.add('car');
@@ -237,6 +238,14 @@
 	createRow(240, 320, 560);
 
 	const homes = document.querySelectorAll('.home');
+	// Add to every home element class "home"
+	homes.forEach((home, index) => {
+		if (index % 2 === 0) {
+			home.style.backgroundImage = "url('img/bulding-top-2.png')";
+		} else if (index % 3 === 0) {
+			home.style.backgroundImage = "url('img/bulding-top-3.png')";
+		}
+	});
 	// Create empty array for every home's cords (left, top) values
 	let homesCords = [];
 
@@ -330,7 +339,7 @@
 	finishGame.prepend(winnerLabel);
 	body.prepend(finishGame);
 
-	function createTimerHtml() {
+	/* function createTimerHtml() {
 		const body = document.querySelector('body');
 		const timer = document.createElement('div');
 		timer.classList.add('time');
@@ -342,7 +351,7 @@
 		seconds = document.createElement('span');
 		seconds.textContent = '00';
 		timer.append(seconds);
-	}
+	} */
 
 	function startTimer() {
 		const timer = setInterval(function() {

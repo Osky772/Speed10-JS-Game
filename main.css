@@ -16,6 +16,10 @@ html, body {
 
 }
 
+.deliver-game-container {
+    display: none;
+}
+
 header {
     width: 100%;
     max-width: 1120px;
@@ -33,7 +37,6 @@ header {
 .time {
     font-size: 3rem;
     align-self: center;
-    margin: 30px 0px;
 }
 
 :root {
@@ -73,7 +76,8 @@ header {
 }
 
 .player1 {
-    background-image: url("img/player1.svg");
+    background-image: url("img/black-pickup.png");
+    background-size: 50%;
     top: var(--p1PositionY);
     left: var(--p1PositionX);
     transform: rotate(90deg);
