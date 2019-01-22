@@ -95,6 +95,10 @@ header {
     animation: rotateCoin 2s linear infinite;
 }
 
+.gold {
+    background-image: url("img/gold.png");
+}
+
 @keyframes rotateCoin {
     from {
         transform: rotateY(0deg);

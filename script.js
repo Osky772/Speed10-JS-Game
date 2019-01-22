@@ -7,7 +7,10 @@
 	// coin element's cords
 	let coinEl;
 	let coinTop = 0;
-    let coinLeft = 0;
+	let coinLeft = 0;
+	// Extra coins
+	let extraCoinTime = 0;
+	let extraCoinCreated = false;
 	// set timer
 	const mins = 2;
 	let totalSeconds = mins * 60;
@@ -253,6 +256,12 @@
 
 	function createCoins() {
 		let isOnStreet = false;
+
+		if (!extraCoinCreated) {
+			extraCoinTime = totalSeconds - Math.ceil(Math.random() * 30);
+			console.log(extraCoinTime);
+			extraCoinCreated = true;
+		}
 		for (let i = 0; !isOnStreet; i++) {
 			const coinPosY = Math.floor(Math.random() * 8) * 80;
 			const coinPosX = Math.floor(Math.random() * 14) * 80;
@@ -276,51 +285,37 @@
 					checkWrongCoins[1].remove();
 				}
 				isOnStreet = true;
-			}
-		}
-    }
-
-    function extraCoins() {
-        const displayExtraCoin = totalSeconds - Math.ceil(Math.random() * 30);
-        console.log(displayExtraCoin);
-        let isOnStreet = false;
-		for (let i = 0; !isOnStreet; i++) {
-			const coinPosY = Math.floor(Math.random() * 8) * 80;
-			const coinPosX = Math.floor(Math.random() * 14) * 80;
-
-			isOnHome = homesCords.some(function(home) {
-				return home.posX === coinPosX && home.posY === coinPosY;
-			});
-
-			if (!isOnHome) {
-				const coin = document.createElement('div');
-				coin.classList.add('coin');
-				coin.style.left = `${coinPosX}px`;
-				coin.style.top = `${coinPosY}px`;
-				deliverContainer.prepend(coin);
-				coinEl = document.querySelector('.coin');
-				coinTop = coinPosY;
-				coinLeft = coinPosX;
-				// Check for bug with doubled coins
-				const checkWrongCoins = document.querySelectorAll('.coin');
-				if (checkWrongCoins.length > 1) {
-					checkWrongCoins[1].remove();
+				if (totalSeconds <= extraCoinTime && extraCoinCreated) {
+					console.log('Extra coin soon...');
+					coin.classList.add('gold');
+					extraCoinCreated = false;
 				}
-				isOnStreet = true;
+
 			}
 		}
-    }
-
-    extraCoins();
+	}
 
 	function getCoin(player) {
 		if (player.classList.contains('player1')) {
-			coinEl.remove();
-			player1Score += 1;
-			player1ScoreHeader.textContent = player1Score;
+			if (coinEl.classList.contains('gold')) {
+				coinEl.remove();
+				player1Score += 5;
+				player1ScoreHeader.textContent = player1Score;	
+			} else {
+				coinEl.remove();
+				player1Score += 1;
+				player1ScoreHeader.textContent = player1Score;
+			}
 		} else if (player.classList.contains('player2')) {
-			player2Score += 1;
-			player2ScoreHeader.textContent = player2Score;
+			if (coinEl.classList.contains('gold')) {
+				coinEl.remove();
+				player2Score += 5;
+				player2ScoreHeader.textContent = player2Score;	
+			} else {
+				coinEl.remove();
+				player2Score += 1;
+				player2ScoreHeader.textContent = player2Score;
+			}
 		}
 		createCoins();
 	}
@@ -351,8 +346,6 @@
 	}
 
 	function startTimer() {
-
-
 		const timer = setInterval(function() {
 			--totalSeconds;
 			seconds.textContent = formatTimer(totalSeconds % 60);
