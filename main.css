@@ -290,8 +290,7 @@ header {
     border: 1px solid green;
 }
 
-.finish-game-disabled {
-    display: none;
+.finish-game {
     position: absolute;
     top: -100%;
     left: 0;
@@ -300,18 +299,27 @@ header {
     z-index: 99999;
     background-color: green;
     color: white;
-    font-size: 16rem;
+    font-size: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.finish-game__player1, .finish-game__player2 {
+    width: 45%;
+    text-align: center;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.finish-game-enabled {
+    top: 0%;
     transition: all 2s ease;
 }
 
 .winner {
     font-size: 5rem;
     color: white;
-}
-
-.finish-game-enabled {
-    top: 0;
 }

@@ -5,6 +5,7 @@
 	const playNode = document.querySelector(".play");
 	const introNode = document.querySelector(".intro");
 	const deliverContainer = document.querySelector('.deliver-map');
+	let isGameRunning = false;
 	// coin element's cords
 	let coinEl;
 	let coinTop = 0;
@@ -13,10 +14,9 @@
 	let extraCoinTime = 0;
 	let extraCoinCreated = false;
 	// set timer
-	const mins = 2;
-	let totalSeconds = mins * 60;
+	let totalSeconds;
 	const minutes = document.querySelector('.minutes');
-	minutes.textContent = '0' + mins;
+	minutes.textContent = '02';
 	const seconds = document.querySelector('.seconds');
 	seconds.textContent = '00';
 	//create player1
@@ -65,14 +65,21 @@
 
 	// START GAME WITH ENTER
 	function startGame(e) {
-		if (!Boolean(document.querySelector(".intro"))) {
-			if (e.keyCode === 13) {
-				startTimer();
-				createCoins();
-				window.addEventListener('keyup', player1Control);
-				window.addEventListener('keyup', player2Control);
-			}
-			window.removeEventListener('keydown', startGame);
+		console.log('hey')
+		console.log(isGameRunning);
+		if (e.keyCode === 13 && !isGameRunning) {
+			totalSeconds = 2;
+			const finishGame = document.querySelector(".finish-game");
+			finishGame.classList.remove("finish-game-enabled");
+			document.documentElement.style.setProperty('--p1PositionX', '0px');
+			document.documentElement.style.setProperty('--p1PositionY', '0px');
+			document.documentElement.style.setProperty('--p2PositionX', '0px');
+			document.documentElement.style.setProperty('--p2PositionY', '640px');
+			startTimer();
+			createCoins();
+			window.addEventListener('keyup', player1Control);
+			window.addEventListener('keyup', player2Control);
+			isGameRunning = true;
 		}
 	}
 	window.addEventListener('keydown', startGame);
@@ -344,13 +351,6 @@
                                                 TIMER AND FINISH GAME
     *******************************************************************************************************************/
 
-	const finishGame = document.createElement('div');
-	const winnerLabel = document.createElement('div');
-	winnerLabel.classList.add('winner');
-	finishGame.classList.add('finish-game-disabled');
-	finishGame.prepend(winnerLabel);
-	body.prepend(finishGame);
-
 	function startTimer() {
 		const timer = setInterval(function() {
 			--totalSeconds;
@@ -376,15 +376,24 @@
 	}
 
 	function winner() {
-		finishGame.classList.add('finish-game-enabled');
-		if (player1Score > player2Score) {
-			winnerLabel.innerHTML = `<p style="text-align: center">player 1 wins!</p> 
-            <p style="text-align: center">score: ${player1Score}</p>`;
-		} else if (player2Score > player1Score) {
-			winnerLabel.innerHTML = `<p style="text-align: center">player 2 wins!</p> 
-            <p style="text-align: center">score: ${player2Score}</p>`;
-		} else {
-			winnerLabel.textContent = "Ayy.. it's draw...";
-		}
+		const finishGame = document.querySelector(".finish-game");
+		const finishP1Score = document.querySelector(".finish-game__player1-score");
+		const finishP2Score = document.querySelector(".finish-game__player2-score");
+		finishGame.classList.add("finish-game-enabled");
+		
+		finishP1Score.textContent = `score: ${player1Score}`;
+		finishP2Score.textContent = `score: ${player2Score}`;
+		
+		setTimeout(() => {
+			document.documentElement.style.setProperty('--p1PositionX', '0px');
+			document.documentElement.style.setProperty('--p1PositionY', '0px');
+			document.documentElement.style.setProperty('--p2PositionX', '0px');
+			document.documentElement.style.setProperty('--p2PositionY', '640px');
+			player1.style.transform = 'rotate(90deg)';
+			player2.style.transform = 'rotate(90deg)';
+			setTimeout(() => {
+				isGameRunning = false;
+			}, 500)
+		}, 2000);
 	}
 })();
