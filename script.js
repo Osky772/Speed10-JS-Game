@@ -2,6 +2,8 @@
 
 (function() {
 	const body = document.querySelector('body');
+	const playNode = document.querySelector(".play");
+	const introNode = document.querySelector(".intro");
 	const deliverContainer = document.querySelector('.deliver-map');
 	// coin element's cords
 	let coinEl;
@@ -53,15 +55,25 @@
 	let p2PositionX = getPlayerPosition(player2, 'x');
 	let p2PositionY = getPlayerPosition(player2, 'y');
 
+	function clickPlay() {
+		const gameContainer = document.querySelector(".deliver-game-container");
+		introNode.remove();
+		gameContainer.style.display = 'block';
+	}
+
+	playNode.addEventListener('click', clickPlay);
+
 	// START GAME WITH ENTER
 	function startGame(e) {
-		if (e.keyCode === 13) {
-			startTimer();
-			createCoins();
-			window.addEventListener('keyup', player1Control);
-			window.addEventListener('keyup', player2Control);
+		if (!Boolean(document.querySelector(".intro"))) {
+			if (e.keyCode === 13) {
+				startTimer();
+				createCoins();
+				window.addEventListener('keyup', player1Control);
+				window.addEventListener('keyup', player2Control);
+			}
+			window.removeEventListener('keydown', startGame);
 		}
-		window.removeEventListener('keydown', startGame);
 	}
 	window.addEventListener('keydown', startGame);
 
