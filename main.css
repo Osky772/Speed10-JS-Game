@@ -27,6 +27,18 @@ html, body {
     align-items: center;
 }
 
+.logo {
+    font-size: 8rem;
+    color: #fff;
+    padding: 3rem 0;
+}
+
+.P1-name, .P2-name {
+    text-align: center;
+    font-size: 2.5rem;
+    padding: 1rem 0;
+}
+
 .choose-car {
     width: 100%;
     display: flex;
@@ -38,12 +50,6 @@ html, body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.P1-name, .P2-name {
-    text-align: center;
-    font-size: 2.5rem;
-    padding: 1rem 0;
 }
 
 .P1-car, .P2-car {
@@ -91,10 +97,32 @@ html, body {
     font-size: 2rem;
 }
 
-.logo {
-    font-size: 8rem;
-    color: #fff;
-    padding: 3rem 0;
+.instructions {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.control {
+    width: 350px;
+    height: 250px;
+}
+
+.control-player1 {
+    background-image: url("img/arrows.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.control-player2 {
+    background-image: url("img/wsad.png");
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.points-info {
+    width: 350px;
+    border: 1px solid green;
 }
 
 .deliver-game-container {

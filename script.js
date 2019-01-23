@@ -339,20 +339,6 @@
 	finishGame.prepend(winnerLabel);
 	body.prepend(finishGame);
 
-	/* function createTimerHtml() {
-		const body = document.querySelector('body');
-		const timer = document.createElement('div');
-		timer.classList.add('time');
-		timer.innerHTML = ':';
-		body.prepend(timer);
-		minutes = document.createElement('span');
-		minutes.textContent = '0' + mins;
-		timer.prepend(minutes);
-		seconds = document.createElement('span');
-		seconds.textContent = '00';
-		timer.append(seconds);
-	} */
-
 	function startTimer() {
 		const timer = setInterval(function() {
 			--totalSeconds;
