@@ -122,7 +122,42 @@ html, body {
 
 .points-info {
     width: 350px;
-    border: 1px solid green;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 1.4rem;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.points-info p {
+    padding-left: 80px;
+}
+
+.one-point:before {
+    content: '';
+    background-image: url("img/coin.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: absolute;
+    left: 35px;
+    width: 30px;
+    height: 16px;
+    transform: scale(3);
+}
+
+.five-points:before {
+    content: '';
+    background-image: url("img/gold.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: inline-block;
+    position: absolute;
+    left: 33px;
+    width: 30px;
+    height: 16px;
+    transform: scale(3);
 }
 
 .deliver-game-container {
