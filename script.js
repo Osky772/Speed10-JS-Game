@@ -119,9 +119,7 @@
 		const carImg = allCars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
-		console.log(carImg)
 		if (carImg === 0 || carImg === -1) {
-			playerCarChoose.style.backgroundImage = 'url("img/black-fastcar.png")';
 			return;
 		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg - 1].car;
@@ -139,9 +137,8 @@
 		const carImg = allCars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
-		console.log(carImg)
-		console.log(allCars.length)
-		if (carImg === allCars.length - 1) {
+		if (carImg === allCars.length - 1 || carImg === -1) {
+			playerCarChoose.style.backgroundImage = 'url("img/black-fastcar.png")';
 			return;
 		} else if (allCars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg + 1].car;
