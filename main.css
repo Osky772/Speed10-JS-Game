@@ -85,7 +85,7 @@ html, body {
 }
 
 .car-image {
-    background-image: url("img/black-pickup.png");
+    background-image: url("img/black-fastcar.png");
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -169,9 +169,6 @@ html, body {
     transform: scale(3);
 }
 
-.rights {
-}
-
 .deliver-game-container {
     display: none;
 }
@@ -242,6 +239,7 @@ header {
 
 .player2 {
     background-image: url("img/player2.png");
+    background-size: 50%;
     top: var(--p2PositionY);
     left: var(--p2PositionX);
     transform: rotate(90deg);

@@ -1,7 +1,6 @@
 // *** app should have way to select color of player1 of every player ***
 
 (function() {
-	const body = document.querySelector('body');
 	const playNode = document.querySelector(".play");
 	const introNode = document.querySelector(".intro");
 	const deliverContainer = document.querySelector('.deliver-map');
@@ -28,6 +27,8 @@
 	deliverContainer.prepend(player1);
 	const player1ScoreHeader = document.querySelector('.player-one__score');
 	let player1Score = 0;
+	const leftArrowP1 = document.querySelector('.triangle-left.P1');
+	const rightArrowP1 = document.querySelector('.triangle-right.P1');
 	//create player2
 	const player2 = document.createElement('div');
 	player2.classList.add('car');
@@ -36,6 +37,8 @@
 	deliverContainer.prepend(player2);
 	const player2ScoreHeader = document.querySelector('.player-two__score');
 	let player2Score = 0;
+	const leftArrowP2 = document.querySelector('.triangle-left.P2');
+	const rightArrowP2 = document.querySelector('.triangle-right.P2');
 	// Get total width and height of map container
 	const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue('width').slice(0, -2));
 	const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue('height').slice(0, -2));
@@ -47,6 +50,62 @@
 			return Number(getComputedStyle(document.documentElement).getPropertyValue(setPosition).slice(0, -2));
 		}
 	}
+
+	const allCars = [
+		{
+			car: 'url("img/black-fastcar.png")'
+		},
+		{
+			car: 'url("img/black-pickup.png")'
+		},
+		{
+			car: 'url("img/blue-fastcar.png")'
+		},
+		{
+			car: 'url("img/green-fastcar.png")'
+		},
+		{
+			car: 'url("img/red-fastcar.png")'
+		},
+		{
+			car: 'url("img/red-fastcar2.png")'
+		},
+		{
+			car: 'url("img/white-fastcar.png")'
+		}
+	]
+	
+	leftArrowP1.addEventListener('click', leftArrowChoose);
+	rightArrowP1.addEventListener('click', rightArrowChoose);
+	leftArrowP2.addEventListener('click', leftArrowChoose);
+	rightArrowP2.addEventListener('click', rightArrowChoose);
+
+	function leftArrowChoose(e) {
+		const player = e.currentTarget.classList[1];
+		const playerCarChoose = document.querySelector(`.car-image.${player}`);
+		const carImg = allCars.findIndex(car => {
+			return car.car === playerCarChoose.style.backgroundImage;
+		})
+		if (carImg === 0 || carImg === -1) {
+			return;
+		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
+			playerCarChoose.style.backgroundImage = allCars[carImg - 1].car;
+		}
+	}
+
+	function rightArrowChoose(e) {
+		const player = e.currentTarget.classList[1];
+		const player1CarChoose = document.querySelector(`.car-image.${player}`);
+		const carImg = allCars.findIndex(car => {
+			return car.car === player1CarChoose.style.backgroundImage;
+		})
+		if (carImg === allCars.length - 1) {
+			return;
+		} else if (allCars[carImg + 1].car !== player1CarChoose.style.backgroundImage) {
+			player1CarChoose.style.backgroundImage = allCars[carImg + 1].car;
+		}
+	}
+
 	// Starting position and rotate of player1
 	let deg = 90;
 	let p1PositionX = getPlayerPosition('--p1PositionX', 'x');
@@ -60,15 +119,12 @@
 		introNode.remove();
 		gameContainer.style.display = 'block';
 	}
-
 	playNode.addEventListener('click', clickPlay);
 
 	// START GAME WITH ENTER
 	function startGame(e) {
-		console.log('hey')
-		console.log(isGameRunning);
 		if (e.keyCode === 13 && !isGameRunning) {
-			totalSeconds = 2;
+			totalSeconds = 120;
 			const finishGame = document.querySelector(".finish-game");
 			finishGame.classList.remove("finish-game-enabled");
 			document.documentElement.style.setProperty('--p1PositionX', '0px');
