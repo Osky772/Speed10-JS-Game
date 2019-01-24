@@ -72,7 +72,38 @@
 		},
 		{
 			car: 'url("img/white-fastcar.png")'
-		}
+		},
+		{
+			car: 'url("img/white-fastcar3.png")'
+		},
+		{
+			car: 'url("img/white-van.png")'
+		},
+		{
+			car: 'url("img/yellow-fastcar.png")'
+		},
+		{
+			car: 'url("img/red-fastcar3.png")'
+		},
+		{
+			car: 'url("img/yellow-pickup.png")'
+		},
+		{
+			car: 'url("img/police.png")'
+		},
+		{
+			car: 'url("img/blue-van.png")'
+		},
+		{
+			car: 'url("img/blue-pickup.png")'
+		},
+		{
+			car: 'url("img/black-van.png")'
+		},
+		{
+			car: 'url("img/black-fastcar2.png")'
+		},
+		
 	]
 	
 	leftArrowP1.addEventListener('click', leftArrowChoose);
@@ -86,6 +117,7 @@
 		const carImg = allCars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
+		console.log(carImg)
 		if (carImg === 0 || carImg === -1) {
 			return;
 		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
@@ -104,7 +136,10 @@
 		const carImg = allCars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
+		console.log(carImg)
+		console.log(allCars.length)
 		if (carImg === allCars.length - 1) {
+			console.log('true')
 			return;
 		} else if (allCars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg + 1].car;
