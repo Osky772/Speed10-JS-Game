@@ -177,14 +177,14 @@
 	function startGame(e) {
 		if (e.keyCode === 13 && !isGameRunning) {
 			const beforePlay = document.querySelector(".before-play");
-			beforePlay.remove();
+			beforePlay !== null ? beforePlay.remove() : beforePlay;
 			totalSeconds = 120;
 			const finishGame = document.querySelector(".finish-game");
 			finishGame.classList.remove("finish-game-enabled");
 			document.documentElement.style.setProperty('--p1PositionX', '0px');
 			document.documentElement.style.setProperty('--p1PositionY', '0px');
-			document.documentElement.style.setProperty('--p2PositionX', '0px');
-			document.documentElement.style.setProperty('--p2PositionY', '640px');
+			document.documentElement.style.setProperty('--p2PositionX', '1100px');
+			document.documentElement.style.setProperty('--p2PositionY', '0px');
 			startTimer();
 			createCoins();
 			window.addEventListener('keyup', player1Control);
@@ -203,7 +203,7 @@
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsX = homesCords.some((home) => {
 			// check if player's position would be the same as any home's position and would not be equal to deliver home cords
-			return playerPositionX + 80 === home.posX && playerPositionY === home.posY;
+			return playerPositionX + 50 === home.posX && playerPositionY === home.posY;
 		});
 		if (cordsX || !(playerPositionX < totalWidth)) {
 			playerPositionX;
@@ -211,7 +211,7 @@
 			player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
 			deg = 90;
 			player.style.transform = `rotate(${deg}deg)`;
-			playerPositionX += 80;
+			playerPositionX += 50;
 			document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
 			if (playerPositionY === coinTop && playerPositionX === coinLeft) {
 				getCoin(player);
@@ -223,7 +223,7 @@
 		playerPositionY = getPlayerPosition(setPositionY, 'y');
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsX = homesCords.some((home) => {
-			return playerPositionX - 80 === home.posX && playerPositionY === home.posY;
+			return playerPositionX - 50 === home.posX && playerPositionY === home.posY;
 		});
 		if (cordsX || !(playerPositionX > 0)) {
 			playerPositionX;
@@ -241,7 +241,7 @@
 				deg = 270;
 				player.style.transform = `rotate(${deg}deg)`;
 			}
-			playerPositionX -= 80;
+			playerPositionX -= 50;
 			document.documentElement.style.setProperty(setPositionX, playerPositionX + suffix);
 			if (playerPositionY === coinTop && playerPositionX === coinLeft) {
 				getCoin(player);
@@ -252,15 +252,15 @@
 		playerPositionY = getPlayerPosition(setPositionY, 'y');
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsY = homesCords.some((home) => {
-			return playerPositionX === home.posX && playerPositionY + 80 === home.posY;
+			return playerPositionX === home.posX && playerPositionY + 50 === home.posY;
 		});
-		if (cordsY || !(playerPositionY + 80 < totalHeight)) {
+		if (cordsY || !(playerPositionY + 50 < totalHeight)) {
 			playerPositionY;
 		} else {
 			player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
 			deg = 180;
 			player.style.transform = `rotate(${deg}deg)`;
-			playerPositionY += 80;
+			playerPositionY += 50;
 			document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
 			if (playerPositionY === coinTop && playerPositionX === coinLeft) {
 				getCoin(player);
@@ -272,7 +272,7 @@
 		playerPositionY = getPlayerPosition(setPositionY, 'y');
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsY = homesCords.some((home) => {
-			return playerPositionX === home.posX && playerPositionY - 80 === home.posY;
+			return playerPositionX === home.posX && playerPositionY - 50 === home.posY;
 		});
 		if (cordsY || !(playerPositionY > 0)) {
 			playerPositionY;
@@ -290,7 +290,7 @@
 				deg = 0;
 				player.style.transform = `rotate(${deg}deg)`;
 			}
-			playerPositionY -= 80;
+			playerPositionY -= 50;
 			document.documentElement.style.setProperty(setPositionY, playerPositionY + suffix);
 			if (playerPositionY === coinTop && playerPositionX === coinLeft) {
 				getCoin(player);
@@ -327,7 +327,7 @@
     //******************************************************************************************************************/
 
 	function createRow(startX, endX, startY) {
-		for (let x = startX; x <= endX; x += 80) {
+		for (let x = startX; x <= endX; x += 50) {
 			const y = startY;
 			const home = document.createElement('div');
 			home.classList.add('home');
@@ -338,7 +338,7 @@
 	}
 
 	function createColumn(startY, endY, startX) {
-		for (let y = startY; y <= endY; y += 80) {
+		for (let y = startY; y <= endY; y += 50) {
 			let x = startX;
 			const home = document.createElement('div');
 			home.classList.add('home');
@@ -348,7 +348,64 @@
 		}
 	}
 
-	createColumn(80, 560, 0);
+	createRow(0, 200, 50);
+	createRow(0, 100, 150);
+	createRow(0, 50, 500);
+	createRow(0, 150, 700);
+	createRow(50, 200, 400);
+	createRow(150, 300, 500);
+	createRow(250, 300, 600);
+	createRow(250, 300, 650);
+	createRow(300, 400, 0);
+	createRow(400, 500, 700);
+	createRow(500, 500, 0);
+	createRow(500, 500, 150);
+	createRow(500, 500, 250);
+	createRow(500, 500, 450);
+	createRow(500, 500, 550);
+
+	createColumn(0,300,550);
+	createColumn(400,700,550);
+	createColumn(50,200,300);
+	createColumn(100,150,200);
+	createColumn(200,300,0);
+	createColumn(250,350,100);
+	createColumn(250,350,200);
+	createColumn(300,400,300);
+	createColumn(100,300,400);
+	createColumn(400,600,400);
+	createColumn(550,600,50);
+	createColumn(550,600,150);
+
+	createRow(900, 1100, 50);
+	createRow(700, 800, 0);
+	createRow(1000, 1100, 150);
+	createRow(1000, 1100, 150);
+	createRow(900, 1050, 400);
+	createRow(1050, 1100, 500);
+	createRow(800, 950, 500);
+	createRow(800, 850, 600);
+	createRow(800, 850, 650);
+	createRow(950, 1100, 700);
+	createRow(600, 700, 700);
+	createRow(600, 600, 550);
+	createRow(600, 600, 450);
+	createRow(600, 600, 150);
+	createRow(600, 600, 250);
+	createRow(600, 600, 0);
+
+	createColumn(50,200,800);
+	createColumn(100,300,700);
+	createColumn(100,150,900);
+	createColumn(400,600,700);
+	createColumn(300,400,800);
+	createColumn(250,350,900);
+	createColumn(250,350,1000);
+	createColumn(200,300,1100);
+	createColumn(550,600,950);
+	createColumn(550,600,1050);
+
+	/* createColumn(80, 560, 0);
 	createRow(160, 720, 0);
 	createColumn(0, 640, 1040);
 	createColumn(0, 240, 800);
@@ -364,17 +421,18 @@
 	createRow(880, 880, 240);
 	createRow(880, 880, 80);
 	createColumn(560, 640, 160);
-	createRow(240, 320, 560);
+	createRow(240, 320, 560); */
 
 	const homes = document.querySelectorAll('.home');
 	// Add to every home element class "home"
 	homes.forEach((home, index) => {
-		if (index % 2 === 0) {
-			home.style.backgroundImage = "url('img/bulding-top-2.png')";
-		} else if (index % 3 === 0) {
+		if (index % 4 === 0) {
 			home.style.backgroundImage = "url('img/bulding-top-3.png')";
+		} else if (index % 5 === 0) {
+			home.style.backgroundImage = "url('img/bulding-top-2.png')";
 		}
 	});
+
 	// Create empty array for every home's cords (left, top) values
 	let homesCords = [];
 
@@ -400,8 +458,8 @@
 			extraCoinCreated = true;
 		}
 		for (let i = 0; !isOnStreet; i++) {
-			const coinPosY = Math.floor(Math.random() * 8) * 80;
-			const coinPosX = Math.floor(Math.random() * 14) * 80;
+			const coinPosY = Math.floor(Math.random() * 8) * 50;
+			const coinPosX = Math.floor(Math.random() * 14) * 50;
 
 			isOnHome = homesCords.some(function(home) {
 				return home.posX === coinPosX && home.posY === coinPosY;
@@ -525,8 +583,8 @@
 		setTimeout(() => {
 			document.documentElement.style.setProperty('--p1PositionX', '0px');
 			document.documentElement.style.setProperty('--p1PositionY', '0px');
-			document.documentElement.style.setProperty('--p2PositionX', '0px');
-			document.documentElement.style.setProperty('--p2PositionY', '640px');
+			document.documentElement.style.setProperty('--p2PositionX', '1100px');
+			document.documentElement.style.setProperty('--p2PositionY', '0px');
 			player1.style.transform = 'rotate(90deg)';
 			player2.style.transform = 'rotate(90deg)';
 			setTimeout(() => {

@@ -200,8 +200,8 @@ header {
 :root {
     --p1PositionX: 0px;
     --p1PositionY: 0px;
-    --p2PositionX: 0px;
-    --p2PositionY: 640px;
+    --p2PositionX: 1100px;
+    --p2PositionY: 0px;
 }
 
 .before-play {
@@ -219,20 +219,21 @@ header {
 }
 
 .deliver-map {
-    width: 1120px;
-    height: 720px;
+    width: 1150px;
+    height: 750px;
     background: lightgray;
     position: relative;
     display: grid;
-    grid-template-columns: 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
-    grid-template-rows: 80px 80px 80px 80px 80px 80px 80px 80px 80px;
+    grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px ;
+    grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px 50px;
 }
 
 .home {
     background-image: url("img/bulding-top-4.png");
+    background-size: contain;
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     
 }
 
@@ -242,8 +243,8 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     transition: top 0.5s, left 0.5s, transform 0.1s;
 }
 
@@ -258,7 +259,7 @@ header {
     background-size: 50%;
     top: var(--p2PositionY);
     left: var(--p2PositionX);
-    transform: rotate(90deg);
+    transform: rotate(270deg);
 }
 
 .scores {
@@ -271,8 +272,8 @@ header {
     background-position: center;
     background-repeat: no-repeat;
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 50px;
+    height: 50px;
     animation: rotateCoin 2s linear infinite;
 }
 
