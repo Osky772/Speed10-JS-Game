@@ -53,10 +53,6 @@ html, body {
     justify-content: center;
 }
 
-.choose-car__container:hover {
-    color: green;
-}
-
 .P1-car, .P2-car {
     height: 100%;
 }
@@ -229,7 +225,6 @@ header {
 }
 
 .player1 {
-    background-image: url("img/black-pickup.png");
     background-size: 50%;
     top: var(--p1PositionY);
     left: var(--p1PositionX);
@@ -238,7 +233,6 @@ header {
 
 
 .player2 {
-    background-image: url("img/player2.png");
     background-size: 50%;
     top: var(--p2PositionY);
     left: var(--p2PositionX);

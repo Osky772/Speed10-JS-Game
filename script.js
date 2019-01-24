@@ -22,6 +22,7 @@
 	const player1 = document.createElement('div');
 	player1.classList.add('car');
 	player1.classList.add('player1');
+	player1.style.backgroundImage = 'url("img/black-fastcar.png")';
 	player1.dataset.px = 'px';
 	const suffix = player1.dataset.px;
 	deliverContainer.prepend(player1);
@@ -33,6 +34,7 @@
 	const player2 = document.createElement('div');
 	player2.classList.add('car');
 	player2.classList.add('player2');
+	player2.style.backgroundImage = 'url("img/black-fastcar.png")';
 	player2.dataset.px = 'px';
 	deliverContainer.prepend(player2);
 	const player2ScoreHeader = document.querySelector('.player-two__score');
@@ -119,6 +121,7 @@
 		})
 		console.log(carImg)
 		if (carImg === 0 || carImg === -1) {
+			playerCarChoose.style.backgroundImage = 'url("img/black-fastcar.png")';
 			return;
 		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg - 1].car;
@@ -139,7 +142,6 @@
 		console.log(carImg)
 		console.log(allCars.length)
 		if (carImg === allCars.length - 1) {
-			console.log('true')
 			return;
 		} else if (allCars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg + 1].car;
