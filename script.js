@@ -27,6 +27,7 @@
 	const suffix = player1.dataset.px;
 	deliverContainer.prepend(player1);
 	const player1ScoreHeader = document.querySelector('.player-one__score');
+	const addScoreP1 = document.querySelector(".player-one__add-score");
 	let player1Score = 0;
 	const leftArrowP1 = document.querySelector('.triangle-left.P1');
 	const rightArrowP1 = document.querySelector('.triangle-right.P1');
@@ -38,6 +39,7 @@
 	player2.dataset.px = 'px';
 	deliverContainer.prepend(player2);
 	const player2ScoreHeader = document.querySelector('.player-two__score');
+	const addScoreP2 = document.querySelector(".player-two__add-score");
 	let player2Score = 0;
 	const leftArrowP2 = document.querySelector('.triangle-left.P2');
 	const rightArrowP2 = document.querySelector('.triangle-right.P2');
@@ -427,24 +429,52 @@
 			if (coinEl.classList.contains('gold')) {
 				coinEl.remove();
 				player1Score += 5;
-				player1ScoreHeader.textContent = player1Score;	
+				player1ScoreHeader.textContent = player1Score;
+				addScoreP1.textContent = "+5";
+				addScoreAnimation(addScoreP1);
 			} else {
 				coinEl.remove();
+				addScoreP1.style.animation = '';
 				player1Score += 1;
 				player1ScoreHeader.textContent = player1Score;
+				addScoreP1.textContent = "+1";
+				addScoreAnimation(addScoreP1);
 			}
 		} else if (player.classList.contains('player2')) {
 			if (coinEl.classList.contains('gold')) {
 				coinEl.remove();
 				player2Score += 5;
 				player2ScoreHeader.textContent = player2Score;	
+				addScoreP2.textContent = "+5";
+				addScoreAnimation(addScoreP2);
 			} else {
 				coinEl.remove();
 				player2Score += 1;
 				player2ScoreHeader.textContent = player2Score;
+				addScoreP2.textContent = "+1";
+				addScoreAnimation(addScoreP2);
 			}
 		}
 		createCoins();
+	}
+
+	function addScoreAnimation(addScoreNode) {
+		if (addScoreNode.style.opacity === '' || addScoreNode.style.opacity === '0') {
+			addScoreNode.style.opacity = '1';
+			setTimeout(() => {
+				addScoreNode.style.opacity = '0';
+			},1000)
+		} else if (addScoreNode.style.opacity === '1') {
+			let counter = 0;
+			const score = setInterval(() => {
+				addScoreNode.style.opacity = '1';
+				counter+=1;
+				if (counter === 10) {
+					addScoreNode.style.opacity = '0';
+					clearInterval(score);
+				}
+			}, 100);
+		}
 	}
 
 	/******************************************************************************************************************
