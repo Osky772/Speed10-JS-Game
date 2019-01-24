@@ -458,8 +458,8 @@
 			extraCoinCreated = true;
 		}
 		for (let i = 0; !isOnStreet; i++) {
-			const coinPosY = Math.floor(Math.random() * 8) * 50;
-			const coinPosX = Math.floor(Math.random() * 14) * 50;
+			const coinPosY = Math.floor(Math.random() * 15) * 50;
+			const coinPosX = Math.floor(Math.random() * 23) * 50;
 
 			isOnHome = homesCords.some(function(home) {
 				return home.posX === coinPosX && home.posY === coinPosY;
