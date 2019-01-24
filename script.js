@@ -1,6 +1,7 @@
 // *** app should have way to select color of player1 of every player ***
 
 (function() {
+	const body = document.querySelector("body");
 	const playNode = document.querySelector(".play");
 	const introNode = document.querySelector(".intro");
 	const deliverContainer = document.querySelector('.deliver-map');
@@ -164,12 +165,19 @@
 		const gameContainer = document.querySelector(".deliver-game-container");
 		introNode.remove();
 		gameContainer.style.display = 'block';
+		const beforePlay = document.createElement("div");
+		beforePlay.classList.add('before-play');
+		beforePlay.textContent = 'Click enter to play';
+		body.prepend(beforePlay);
+		
 	}
 	playNode.addEventListener('click', clickPlay);
 
 	// START GAME WITH ENTER
 	function startGame(e) {
 		if (e.keyCode === 13 && !isGameRunning) {
+			const beforePlay = document.querySelector(".before-play");
+			beforePlay.remove();
 			totalSeconds = 120;
 			const finishGame = document.querySelector(".finish-game");
 			finishGame.classList.remove("finish-game-enabled");

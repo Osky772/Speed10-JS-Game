@@ -187,26 +187,10 @@ header {
 .add-scores {
     opacity: 0;
     position: absolute;
-    left: 160px;
+    left: 170px;
     top: 50%;
     color: green;
 }
-
-/* @keyframes addScore {
-    from {
-        opacity: 1;
-    }
-
-    to {
-        opacity: 0;
-    }
-}
-
-.run-animation {
-    animation-duration: 1s;
-    animation-name: addScore;
-    animation-iteration-count: 1;
-} */
 
 .time {
     font-size: 3rem;
@@ -218,6 +202,20 @@ header {
     --p1PositionY: 0px;
     --p2PositionX: 0px;
     --p2PositionY: 640px;
+}
+
+.before-play {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: 0.5;
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    color: white; 
 }
 
 .deliver-map {
