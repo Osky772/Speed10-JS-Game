@@ -90,19 +90,29 @@
 			return;
 		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
 			playerCarChoose.style.backgroundImage = allCars[carImg - 1].car;
+			if (player === 'P1') {
+				player1.style.backgroundImage = allCars[carImg - 1].car;
+			} else {
+				player2.style.backgroundImage = allCars[carImg - 1].car;
+			}
 		}
 	}
 
 	function rightArrowChoose(e) {
 		const player = e.currentTarget.classList[1];
-		const player1CarChoose = document.querySelector(`.car-image.${player}`);
+		const playerCarChoose = document.querySelector(`.car-image.${player}`);
 		const carImg = allCars.findIndex(car => {
-			return car.car === player1CarChoose.style.backgroundImage;
+			return car.car === playerCarChoose.style.backgroundImage;
 		})
 		if (carImg === allCars.length - 1) {
 			return;
-		} else if (allCars[carImg + 1].car !== player1CarChoose.style.backgroundImage) {
-			player1CarChoose.style.backgroundImage = allCars[carImg + 1].car;
+		} else if (allCars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
+			playerCarChoose.style.backgroundImage = allCars[carImg + 1].car;
+			if (player === 'P1') {
+				player1.style.backgroundImage = allCars[carImg + 1].car;
+			} else {
+				player2.style.backgroundImage = allCars[carImg + 1].car;
+			}
 		}
 	}
 
