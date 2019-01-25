@@ -249,14 +249,14 @@ header {
 }
 
 .player1 {
-    background-size: 50%;
+    background-size: 62%;
     top: var(--p1PositionY);
     left: var(--p1PositionX);
     transform: rotate(90deg);
 }
 
 .player2 {
-    background-size: 50%;
+    background-size: 62%;
     top: var(--p2PositionY);
     left: var(--p2PositionX);
     transform: rotate(270deg);
