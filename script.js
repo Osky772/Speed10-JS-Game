@@ -30,8 +30,7 @@
 	const player1ScoreHeader = document.querySelector('.player-one__score');
 	const addScoreP1 = document.querySelector(".player-one__add-score");
 	let player1Score = 0;
-	const leftArrowP1 = document.querySelector('.triangle-left.P1');
-	const rightArrowP1 = document.querySelector('.triangle-right.P1');
+
 	//create player2
 	const player2 = document.createElement('div');
 	player2.classList.add('car');
@@ -42,11 +41,6 @@
 	const player2ScoreHeader = document.querySelector('.player-two__score');
 	const addScoreP2 = document.querySelector(".player-two__add-score");
 	let player2Score = 0;
-	const leftArrowP2 = document.querySelector('.triangle-left.P2');
-	const rightArrowP2 = document.querySelector('.triangle-right.P2');
-	// Get total width and height of map container
-	const totalWidth = Number(getComputedStyle(deliverContainer).getPropertyValue('width').slice(0, -2));
-	const totalHeight = Number(getComputedStyle(deliverContainer).getPropertyValue('height').slice(0, -2));
 
 	function getPlayerPosition(setPosition, axis) {
 		if (axis === 'x') {
@@ -56,7 +50,7 @@
 		}
 	}
 
-	const allCars = [
+	const cars = [
 		{
 			car: 'url("img/black-fastcar.png")'
 		},
@@ -108,28 +102,31 @@
 		{
 			car: 'url("img/black-fastcar2.png")'
 		},
-		
 	]
-	
-	leftArrowP1.addEventListener('click', leftArrowChoose);
-	rightArrowP1.addEventListener('click', rightArrowChoose);
-	leftArrowP2.addEventListener('click', leftArrowChoose);
-	rightArrowP2.addEventListener('click', rightArrowChoose);
+
+	function runCarChooseArrows() {
+		const leftArrow = document.querySelectorAll('.triangle-left');
+		const rightArrow = document.querySelectorAll('.triangle-right');
+		leftArrow.forEach(arrow => arrow.addEventListener('click', leftArrowChoose));
+		rightArrow.forEach(arrow => arrow.addEventListener('click', rightArrowChoose));
+	}
+
+	runCarChooseArrows();
 
 	function leftArrowChoose(e) {
 		const player = e.currentTarget.classList[1];
 		const playerCarChoose = document.querySelector(`.car-image.${player}`);
-		const carImg = allCars.findIndex(car => {
+		const carImg = cars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
 		if (carImg === 0 || carImg === -1) {
 			return;
-		} else if (allCars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
-			playerCarChoose.style.backgroundImage = allCars[carImg - 1].car;
+		} else if (cars[carImg - 1].car !== playerCarChoose.style.backgroundImage) {
+			playerCarChoose.style.backgroundImage = cars[carImg - 1].car;
 			if (player === 'P1') {
-				player1.style.backgroundImage = allCars[carImg - 1].car;
+				player1.style.backgroundImage = cars[carImg - 1].car;
 			} else {
-				player2.style.backgroundImage = allCars[carImg - 1].car;
+				player2.style.backgroundImage = cars[carImg - 1].car;
 			}
 		}
 	}
@@ -137,18 +134,15 @@
 	function rightArrowChoose(e) {
 		const player = e.currentTarget.classList[1];
 		const playerCarChoose = document.querySelector(`.car-image.${player}`);
-		const carImg = allCars.findIndex(car => {
+		const carImg = cars.findIndex(car => {
 			return car.car === playerCarChoose.style.backgroundImage;
 		})
-		if (carImg === allCars.length - 1 || carImg === -1) {
-			playerCarChoose.style.backgroundImage = 'url("img/black-fastcar.png")';
-			return;
-		} else if (allCars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
-			playerCarChoose.style.backgroundImage = allCars[carImg + 1].car;
+		if (carImg + 1 < cars.length && cars[carImg + 1].car !== playerCarChoose.style.backgroundImage) {
+			playerCarChoose.style.backgroundImage = cars[carImg + 1].car;
 			if (player === 'P1') {
-				player1.style.backgroundImage = allCars[carImg + 1].car;
+				player1.style.backgroundImage = cars[carImg + 1].car;
 			} else {
-				player2.style.backgroundImage = allCars[carImg + 1].car;
+				player2.style.backgroundImage = cars[carImg + 1].car;
 			}
 		}
 	}
@@ -199,13 +193,13 @@
     ******************************************************************************************************************/
 
 	function rideRight(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
+		const mapWidth = Number(getComputedStyle(deliverContainer).getPropertyValue('width').slice(0, -2));
 		playerPositionY = getPlayerPosition(setPositionY, 'y');
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsX = homesCords.some((home) => {
-			// check if player's position would be the same as any home's position and would not be equal to deliver home cords
 			return playerPositionX + 50 === home.posX && playerPositionY === home.posY;
 		});
-		if (cordsX || !(playerPositionX < totalWidth)) {
+		if (cordsX || !(playerPositionX + 50 < mapWidth)) {
 			playerPositionX;
 		} else {
 			player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -249,12 +243,13 @@
 		}
 	}
 	function rideDown(player, playerPositionX, playerPositionY, setPositionX, setPositionY) {
+		const mapHeight = Number(getComputedStyle(deliverContainer).getPropertyValue('height').slice(0, -2));
 		playerPositionY = getPlayerPosition(setPositionY, 'y');
 		playerPositionX = getPlayerPosition(setPositionX, 'x');
 		let cordsY = homesCords.some((home) => {
 			return playerPositionX === home.posX && playerPositionY + 50 === home.posY;
 		});
-		if (cordsY || !(playerPositionY + 50 < totalHeight)) {
+		if (cordsY || !(playerPositionY + 50 < mapHeight)) {
 			playerPositionY;
 		} else {
 			player.style.transition = `top 0.5s, left 0.5s, transform 0.1s`;
@@ -405,26 +400,7 @@
 	createColumn(550,600,950);
 	createColumn(550,600,1050);
 
-	/* createColumn(80, 560, 0);
-	createRow(160, 720, 0);
-	createColumn(0, 640, 1040);
-	createColumn(0, 240, 800);
-	createRow(160, 560, 160);
-	createColumn(240, 240, 160);
-	createRow(160, 320, 400);
-	createRow(320, 480, 320);
-	createColumn(160, 320, 640);
-	createRow(720, 880, 480);
-	createRow(800, 880, 400);
-	createRow(480, 560, 480);
-	createRow(480, 880, 640);
-	createRow(880, 880, 240);
-	createRow(880, 880, 80);
-	createColumn(560, 640, 160);
-	createRow(240, 320, 560); */
-
 	const homes = document.querySelectorAll('.home');
-	// Add to every home element class "home"
 	homes.forEach((home, index) => {
 		if (index % 4 === 0) {
 			home.style.backgroundImage = "url('img/bulding-top-3.png')";
@@ -433,10 +409,8 @@
 		}
 	});
 
-	// Create empty array for every home's cords (left, top) values
 	let homesCords = [];
 
-	// For every homes elements push object with it's index and position
 	homes.forEach((home, i) => {
 		homesCords.push({
 			home: i,
@@ -560,14 +534,14 @@
 				return;
 			}
 		}, 1000);
+	}
 
-		function formatTimer(val) {
-			let valString = `${val}`;
-			if (valString.length < 2) {
-				return `0${valString}`;
-			} else {
-				return valString;
-			}
+	function formatTimer(val) {
+		let valString = `${val}`;
+		if (valString.length < 2) {
+			return `0${valString}`;
+		} else {
+			return valString;
 		}
 	}
 
@@ -592,4 +566,5 @@
 			}, 500)
 		}, 2000);
 	}
+
 })();
